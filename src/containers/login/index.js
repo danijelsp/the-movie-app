@@ -1,5 +1,12 @@
 // import dependencies
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+// import actions
+import { login } from "../../redux/actions/auth";
+
+// import components
+import Spinner from "../../components/spinner";
 
 // import css
 import "./styles.css";
@@ -8,8 +15,12 @@ import "./styles.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
+
+  const loading = useSelector((state) => state.auth.loading);
+  const emailError = useSelector((state) => state.auth.emailError);
+  const passwordError = useSelector((state) => state.auth.passwordError);
+
+  const dispatch = useDispatch();
 
   // handle methodes
   const handleChange = (event) => {
@@ -23,102 +34,54 @@ function Login() {
     }
   };
   const handleSubmit = (event) => {
+    event.preventDefault();
+
     const user = {
       email: email,
       password: password,
     };
 
-    setEmailError(null);
-    setPasswordError(null);
-
-    login(user).then((data) => {
-      // success
-      if (data.access_token) {
-        const accessToken = data.access_token;
-        localStorage.setItem(
-          "@storage_accessToken",
-          JSON.stringify(accessToken)
-        );
-      }
-
-      // fail
-      if (data.email) {
-        const error = data.email;
-        if (Array.isArray(error)) {
-          setEmailError(error[0]);
-        }
-      }
-      if (data.error) {
-        const error = data.error;
-        if (error === "Unauthorized") {
-          setPasswordError(error);
-        }
-      }
-      if (data.password) {
-        const error = data.password;
-        if (Array.isArray(error)) {
-          setPasswordError(error[0]);
-        }
-      }
-    });
-    event.preventDefault();
-  };
-
-  const login = async (user) => {
-    try {
-      let res = await fetch("http://dev.api.kabox.io/api/auth/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-
-      console.log("(services/auth.js) login res:", res);
-      let data = await res.json();
-      console.log("(services/auth.js) login data:", data);
-
-      return data;
-    } catch (err) {
-      console.log("(services/auth.js) login err: ", err);
-    }
+    dispatch(login(user));
   };
 
   return (
     <div className="container">
-      <div className="form-container">
-        <form className="form" onSubmit={handleSubmit}>
-          <div className="input-container">
-            <label className="label">Email address</label>
-            <input
-              className="input"
-              type="email"
-              name="email"
-              defaultValue={email}
-              onChange={handleChange}
-              required
-            />
-            {emailError && <div className="error">{emailError}</div>}
-          </div>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className="form-container">
+          <form className="form" onSubmit={handleSubmit}>
+            <div className="input-container">
+              <label className="label">Email address</label>
+              <input
+                className="input"
+                type="email"
+                name="email"
+                defaultValue={email}
+                onChange={handleChange}
+                required
+              />
+              {emailError && <div className="error">{emailError}</div>}
+            </div>
 
-          <div className="input-container">
-            <label className="label">Password</label>
-            <input
-              className="input"
-              type="password"
-              name="password"
-              defaultValue={password}
-              onChange={handleChange}
-              required
-            />
-            {passwordError && <div className="error">{passwordError}</div>}
-          </div>
-          <button className="button" type="submit">
-            Login
-          </button>
-        </form>
-      </div>
+            <div className="input-container">
+              <label className="label">Password</label>
+              <input
+                className="input"
+                type="password"
+                name="password"
+                defaultValue={password}
+                onChange={handleChange}
+                required
+              />
+              {passwordError && <div className="error">{passwordError}</div>}
+            </div>
+            <button className="button" type="submit">
+              Login
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 }
