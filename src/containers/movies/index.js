@@ -17,7 +17,6 @@ function Movies() {
     event.preventDefault();
 
     localStorage.clear();
-    console.log("handleSubmit");
     dispatch(logout());
   };
   return (

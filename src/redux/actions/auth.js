@@ -11,11 +11,10 @@ export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export function loginRequest(user) {
   return {
     type: LOGIN_REQUEST,
-    user,
   };
 }
 
-export function loginSuccess({ accessToken }) {
+export function loginSuccess(accessToken) {
   return {
     type: LOGIN_SUCCESS,
     accessToken,
@@ -39,11 +38,8 @@ export function login(user) {
         // SUCCESS
         if (data.access_token) {
           const accessToken = data.access_token;
-          localStorage.setItem(
-            "@storage_accessToken",
-            JSON.stringify(accessToken)
-          );
-          dispatch(loginSuccess({ accessToken: accessToken }));
+          localStorage.setItem("@storage_accessToken", accessToken);
+          dispatch(loginSuccess(accessToken));
         }
 
         // FAIL

@@ -8,7 +8,6 @@ import {
 
 const initialState = {
   loading: false,
-  user: null,
   accessToken: null,
   emailError: null,
   passwordError: null,
@@ -21,7 +20,6 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         loading: true,
-        user: action.user,
         emailError: null,
         passwordError: null,
       };
@@ -29,7 +27,6 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        user: action.user,
         accessToken: action.accessToken,
         emailError: null,
         passwordError: null,
@@ -38,7 +35,6 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        user: null,
         accessToken: null,
         emailError: action.emailError,
         passwordError: action.passwordError,
@@ -47,7 +43,6 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        user: null,
         accessToken: null,
         emailError: null,
         passwordError: null,
