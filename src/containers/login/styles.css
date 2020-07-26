@@ -9,6 +9,7 @@
   color: white;
 }
 .form-container {
+  margin-bottom: 24px;
   border-radius: 6px;
   padding: 24px;
   background-color: #fff;
@@ -60,7 +61,7 @@
   right: 0px;
   margin: 0px;
   font-size: 12px;
-  color: rgba(158, 28, 35, 0.8);
+  color: rgba(206, 28, 37, 0.8);
   text-align: right;
 }
 .button {

@@ -32,6 +32,16 @@ function Login() {
     setPasswordError(null);
 
     login(user).then((data) => {
+      // success
+      if (data.access_token) {
+        const accessToken = data.access_token;
+        localStorage.setItem(
+          "@storage_accessToken",
+          JSON.stringify(accessToken)
+        );
+      }
+
+      // fail
       if (data.email) {
         const error = data.email;
         if (Array.isArray(error)) {
