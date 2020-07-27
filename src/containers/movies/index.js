@@ -5,11 +5,7 @@ import genres from "../../redux/services/genres.json";
 
 // import actions
 import { logout } from "../../redux/actions/auth";
-import {
-  // fetchMoviesWithGenre,
-  fetchAllMovies,
-} from "../../redux/actions/movie";
-// import Movie from "../../redux/services/movie";
+import { fetchAllMovies } from "../../redux/actions/movie";
 
 // import components
 import Spinner from "../../components/spinner";
@@ -21,11 +17,10 @@ import "./styles.css";
 
 // Movies
 function Movies() {
+  const dispatch = useDispatch();
   const loading = useSelector((state) => state.movie.loading);
-  // const moviesWithGenre = useSelector((state) => state.movie.moviesWithGenre);
   const loadingAllMovies = useSelector((state) => state.movie.loadingAllMovies);
   const allMovies = useSelector((state) => state.movie.allMovies);
-  const dispatch = useDispatch();
 
   // handle methodes
   const handleSubmit = (event) => {
@@ -58,16 +53,14 @@ function Movies() {
   });
 
   useEffect(() => {
-    // Movie.getAllItems();
-    // dispatch(fetchMoviesWithGenre(12));
     dispatch(fetchAllMovies());
   }, [dispatch]);
 
-  console.log("allMovies:", allMovies);
-  console.log("typeof allMovies", typeof allMovies);
-  console.log("Object.keys(allMovies):", Object.keys(allMovies));
-  console.log("allMovies[Action]:", allMovies["Action"]);
-  console.log("allMovies.Action:", allMovies.Action);
+  // console.log("allMovies:", allMovies);
+  // console.log("typeof allMovies", typeof allMovies);
+  // console.log("Object.keys(allMovies):", Object.keys(allMovies));
+  // console.log("allMovies[Action]:", allMovies["Action"]);
+  // console.log("allMovies.Action:", allMovies.Action);
   // console.log("Object.values(allMovies):", Object.values(allMovies));
   // console.log("allMovies[Adventure]:", allMovies["Adventure"]);
   // console.log("allMovies[Comedy]:", allMovies["Comedy"]);
@@ -83,26 +76,29 @@ function Movies() {
       {loading || loadingAllMovies ? (
         <Spinner />
       ) : (
-        <>
-          {genres.map((genre) => {
-            return (
-              <div key={genre.name}>
-                <GenreTitle title={genre.name} />
-                <div className="genre-row">
-                  {/*allMovies[genre.name].map((movie) => (
+        <React.Fragment>
+          {genres.map((genre, genreIndex) => (
+            <React.Fragment key={genre.name}>
+              <GenreTitle title={genre.name} />
+              {console.log(
+                `allMovies[${genre.name}] body:`,
+                allMovies[genre.name]
+              )}
+              <div className="genre-row">
+                {allMovies[genre.name] &&
+                  allMovies[genre.name].map((movie, movieIndex) => (
                     <MovieCard
-                      // key={index}
+                      key={genreIndex + "" + movieIndex}
                       posterPath={movie.backdrop_path}
                       title={movie.title}
                       overview={movie.overview}
                       average={movie.vote_average}
                     />
-                  ))*/}
-                </div>
+                  ))}
               </div>
-            );
-          })}
-        </>
+            </React.Fragment>
+          ))}
+        </React.Fragment>
       )}
     </div>
   );

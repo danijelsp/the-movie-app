@@ -48,9 +48,9 @@ export default function movie(state = initialState, action) {
     case FETCH_ALL_MOVIES_SUCCESS:
       return {
         ...state,
-        loadingAllMovies: false,
         allMovies: action.allMovies,
         error: null,
+        loadingAllMovies: false,
       };
     case FETCH_ALL_MOVIES_FAIL:
       return {

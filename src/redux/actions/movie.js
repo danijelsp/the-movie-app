@@ -82,9 +82,10 @@ export function fetchAllMovies() {
   return function (dispatch) {
     dispatch(fetchAllMoviesRequest());
 
-    const allMovies = {};
+    let allMovies = {};
+    const genresLength = genres.length;
 
-    genres.forEach((item) => {
+    genres.forEach((item, index) => {
       Movie.getItemsWithGenre(item.id)
         .then((data) => {
           // SUCCESS
@@ -92,6 +93,10 @@ export function fetchAllMovies() {
             const results = data.results;
             const name = item.name.toString();
             allMovies[name] = results;
+
+            if (index === genresLength - 1) {
+              dispatch(fetchAllMoviesSuccess(allMovies));
+            }
           }
 
           // FAIL
@@ -106,8 +111,5 @@ export function fetchAllMovies() {
           }
         });
     });
-
-    // Check if obj is empty
-    dispatch(fetchAllMoviesSuccess(allMovies));
   };
 }
