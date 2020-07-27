@@ -6,7 +6,7 @@
   align-self: flex-start;
   border: transparent 2px solid;
   width: 309px;
-  height: 180px;
+  height: 210px;
 }
 .movie-poster {
   border: transparent 2px solid;
@@ -19,8 +19,10 @@
 }
 .movie-title {
   width: 309px;
-  height: 30px;
+  height: 60px;
   text-align: center;
   font-size: 17px;
-  line-height: 28px;
+  line-height: 24px;
+  /* word-break: break-all; */
+  white-space: normal;
 }
