@@ -1,15 +1,26 @@
 .movie-container {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   align-self: flex-start;
-  width: 309px;
-  height: 150px;
   border: transparent 2px solid;
+  width: 309px;
+  height: 180px;
 }
 .movie-poster {
+  border: transparent 2px solid;
   width: 309px;
   height: 150px;
   object-fit: cover;
 }
 .active {
   border: red 2px solid;
+}
+.movie-title {
+  width: 309px;
+  height: 30px;
+  text-align: center;
+  font-size: 17px;
+  line-height: 28px;
 }

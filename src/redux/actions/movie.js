@@ -87,7 +87,7 @@ export function fetchAllMovies() {
 
     genres.forEach((item, index) => {
       Movie.getItemsWithGenre(item.id)
-        .then((data) => {
+        .then(async (data) => {
           // SUCCESS
           if (data && data.results) {
             const results = data.results;

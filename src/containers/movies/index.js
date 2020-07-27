@@ -1,5 +1,5 @@
 // import dependencies
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import genres from "../../redux/services/genres.json";
 
@@ -17,6 +17,9 @@ import "./styles.css";
 
 // Movies
 function Movies() {
+  const [xIndex, setXIndex] = useState(0);
+  const [yIndex, setYIndex] = useState(0);
+
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.movie.loading);
   const loadingAllMovies = useSelector((state) => state.movie.loadingAllMovies);
@@ -42,6 +45,17 @@ function Movies() {
 
   function downHandler({ key, keyCode }) {
     // console.log("press key, keyCode", key, keyCode);
+    if (keyCode === 37 && yIndex > 0) {
+      setYIndex(yIndex - 1);
+    } else if (keyCode === 38 && xIndex > 0) {
+      setXIndex(xIndex - 1);
+    }
+    // FIX ME: 20 is hard coded
+    else if (keyCode === 39 && yIndex < 20) {
+      setYIndex(yIndex + 1);
+    } else if (keyCode === 40 && xIndex < genres.length - 1) {
+      setXIndex(xIndex + 1);
+    }
   }
 
   useEffect(() => {
@@ -80,10 +94,10 @@ function Movies() {
           {genres.map((genre, genreIndex) => (
             <React.Fragment key={genre.name}>
               <GenreTitle title={genre.name} />
-              {console.log(
+              {/* console.log(
                 `allMovies[${genre.name}] body:`,
                 allMovies[genre.name]
-              )}
+              )*/}
               <div className="genre-row">
                 {allMovies[genre.name] &&
                   allMovies[genre.name].map((movie, movieIndex) => (
@@ -93,6 +107,9 @@ function Movies() {
                       title={movie.title}
                       overview={movie.overview}
                       average={movie.vote_average}
+                      active={
+                        xIndex + "" + yIndex === genreIndex + "" + movieIndex
+                      }
                     />
                   ))}
               </div>
