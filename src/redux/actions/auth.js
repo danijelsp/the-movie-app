@@ -8,7 +8,7 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 
 // actions creators
-export function loginRequest(user) {
+export function loginRequest() {
   return {
     type: LOGIN_REQUEST,
   };
@@ -31,7 +31,7 @@ export function loginFail({ emailError, passwordError }) {
 
 export function login(user) {
   return function (dispatch, getState) {
-    dispatch(loginRequest(user));
+    dispatch(loginRequest());
 
     Auth.login(user)
       .then((data) => {
@@ -66,6 +66,7 @@ export function login(user) {
         }
       })
       .catch((error) => {
+        // ERROR
         if (error && error.message) {
           dispatch(loginFail(error.message));
         }

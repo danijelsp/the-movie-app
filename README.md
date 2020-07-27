@@ -1,12 +1,15 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## How to run project
 
-## Available Scripts
+Download or clone master branch. Inside of `/src/redux/services/api` put your [https://www.themoviedb.org/](https://www.themoviedb.org/) API key.
 
-In the project directory, you can run:
+`export const API_KEY = "YOUR_API_KEY";`
+
+In the project root directory run:
+
+### `npm install`
 
 ### `npm start`
 
-Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />

@@ -1,0 +1,15 @@
+.movie-container {
+  display: inline-block;
+  align-self: flex-start;
+  width: 309px;
+  height: 150px;
+  border: transparent 2px solid;
+}
+.movie-poster {
+  width: 309px;
+  height: 150px;
+  object-fit: cover;
+}
+.active {
+  border: red 2px solid;
+}
