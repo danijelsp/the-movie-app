@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   loading: false,
-  accessToken: null,
+  accessToken: localStorage.getItem("@storage_accessToken"),
   emailError: null,
   passwordError: null,
 };

@@ -74,6 +74,7 @@ export function login(user) {
 }
 
 export function logout() {
+  localStorage.clear();
   return {
     type: LOGOUT_REQUEST,
   };
