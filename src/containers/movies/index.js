@@ -1,5 +1,5 @@
 // import dependencies
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import genres from "../../redux/services/genres.json";
 
@@ -21,6 +21,7 @@ function Movies() {
   const [xIndex, setXIndex] = useState(0);
   const [yIndex, setYIndex] = useState(0);
   const [movie, setMovie] = useState({});
+  const [refs, setRefs] = useState([]);
   const [modalIsVisible, setModalIsVisible] = useState(false);
 
   const dispatch = useDispatch();
@@ -37,6 +38,8 @@ function Movies() {
     // LEFT ARROW PRESS
     if (keyCode === 37 && yIndex > 0 && !modalIsVisible) {
       setYIndex(yIndex - 1);
+      // FIX ME: 313 is hard coded, movie card width
+      refs[xIndex].current.scrollLeft -= 313;
     }
     // UP ARROW PRESS
     else if (keyCode === 38 && xIndex > 0 && !modalIsVisible) {
@@ -46,6 +49,10 @@ function Movies() {
     // FIX ME: 19 is hard coded, fetch 20 movies per genre
     else if (keyCode === 39 && yIndex < 19 && !modalIsVisible) {
       setYIndex(yIndex + 1);
+      if (yIndex !== 0 && yIndex >= 5) {
+        // FIX ME: 313 is hard coded, movie card width
+        refs[xIndex].current.scrollLeft += 313;
+      }
     }
     // DOWN ARROW PRESS
     else if (keyCode === 40 && xIndex < genres.length - 1 && !modalIsVisible) {
@@ -75,6 +82,9 @@ function Movies() {
   });
 
   useEffect(() => {
+    setRefs((refs) =>
+      genres.map((item, i) => (refs[i] = createRef(item.name)))
+    );
     dispatch(fetchAllMovies());
   }, [dispatch]);
 
@@ -93,7 +103,7 @@ function Movies() {
           {genres.map((genre, genreIndex) => (
             <div className="genre-container" key={genre.name}>
               <GenreTitle title={genre.name} />
-              <div className="genre-row">
+              <div className="genre-row" ref={refs[genreIndex]}>
                 {allMovies[genre.name] &&
                   allMovies[genre.name].map((movie, movieIndex) => (
                     <MovieCard
