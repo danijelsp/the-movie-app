@@ -27,13 +27,15 @@
 .modal-title {
   flex: 1;
   padding: 8px 0px;
-  color: #282c34;
+  font-size: 24px;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.8);
 }
 .overview {
   padding: 12px 0px;
   font-size: 20px;
   line-height: 28px;
-  color: rgba(0, 0, 0, 0.64);
+  color: rgba(0, 0, 0, 0.56);
 }
 .vote-average {
   display: flex;
