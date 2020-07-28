@@ -91,7 +91,7 @@ function Movies() {
       ) : (
         <>
           {genres.map((genre, genreIndex) => (
-            <React.Fragment key={genre.name}>
+            <div className="genre-container" key={genre.name}>
               <GenreTitle title={genre.name} />
               <div className="genre-row">
                 {allMovies[genre.name] &&
@@ -108,7 +108,7 @@ function Movies() {
                     />
                   ))}
               </div>
-            </React.Fragment>
+            </div>
           ))}
         </>
       )}

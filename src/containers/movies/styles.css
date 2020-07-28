@@ -55,16 +55,26 @@
   outline-offset: 2px;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
 }
+.genre-container {
+  width: 100%;
+  overflow: hidden;
+  padding: 0px 21px;
+  box-sizing: border-box;
+}
 .genre-row {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 6px 21px;
+  padding: 6px 0px;
   width: 100%;
   box-sizing: border-box;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
+  overflow-x: scroll;
   overflow-y: hidden;
-  /* overflow-x: auto; */
-  white-space: nowrap;
   -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.genre-row::-webkit-scrollbar {
+  display: none;
 }
