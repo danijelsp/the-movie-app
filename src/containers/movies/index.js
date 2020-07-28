@@ -52,12 +52,11 @@ function Movies() {
       setXIndex(xIndex + 1);
     }
     // ENTER PRESS
-    else if (keyCode === 13) {
+    else if (keyCode === 13 && !modalIsVisible) {
       const genre = genres[xIndex];
       const key = genre.name;
       const genreMovies = allMovies[key];
       const movie = genreMovies[yIndex];
-      console.log("MOVIE:", movie);
       setMovie(movie);
       setModalIsVisible(true);
     }
@@ -78,13 +77,6 @@ function Movies() {
   useEffect(() => {
     dispatch(fetchAllMovies());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   console.log("READY!!!");
-  //   if (Object.keys(allMovies).length === genres.length) {
-  //     setDataReady(true);
-  //   }
-  // }, [allMovies]);
 
   return (
     <div className="movies-container">
