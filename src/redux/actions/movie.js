@@ -94,7 +94,7 @@ export function fetchAllMovies() {
             const name = item.name.toString();
             allMovies[name] = results;
 
-            if (index === genresLength - 1) {
+            if (Object.keys(allMovies).length === genresLength) {
               dispatch(fetchAllMoviesSuccess(allMovies));
             }
           }

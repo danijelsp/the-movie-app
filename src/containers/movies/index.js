@@ -10,6 +10,7 @@ import { fetchAllMovies } from "../../redux/actions/movie";
 // import components
 import Spinner from "../../components/spinner";
 import GenreTitle from "../../components/genretitle";
+import Modal from "../../components/modal";
 import MovieCard from "../../components/moviecard";
 
 // import css
@@ -19,9 +20,10 @@ import "./styles.css";
 function Movies() {
   const [xIndex, setXIndex] = useState(0);
   const [yIndex, setYIndex] = useState(0);
+  const [movie, setMovie] = useState({});
+  const [modalIsVisible, setModalIsVisible] = useState(false);
 
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.movie.loading);
   const loadingAllMovies = useSelector((state) => state.movie.loadingAllMovies);
   const allMovies = useSelector((state) => state.movie.allMovies);
 
@@ -31,30 +33,37 @@ function Movies() {
     dispatch(logout());
   };
 
-  // const handleKeyDown = (e) => {
-  //   if (e.keyCode === 37) {
-  //     console.log("Pres left arrow");
-  //   } else if (e.keyCode === 38) {
-  //     console.log("Pres up arrow");
-  //   } else if (e.keyCode === 39) {
-  //     console.log("Pres right arrow");
-  //   } else if (e.keyCode === 40) {
-  //     console.log("Pres down arrow");
-  //   }
-  // };
-
   function downHandler({ key, keyCode }) {
-    // console.log("press key, keyCode", key, keyCode);
-    if (keyCode === 37 && yIndex > 0) {
+    // LEFT ARROW PRESS
+    if (keyCode === 37 && yIndex > 0 && !modalIsVisible) {
       setYIndex(yIndex - 1);
-    } else if (keyCode === 38 && xIndex > 0) {
+    }
+    // UP ARROW PRESS
+    else if (keyCode === 38 && xIndex > 0 && !modalIsVisible) {
       setXIndex(xIndex - 1);
     }
-    // FIX ME: 20 is hard coded
-    else if (keyCode === 39 && yIndex < 20) {
+    // RIGHT ARROW PRESS
+    // FIX ME: 19 is hard coded, fetch 20 movies per genre
+    else if (keyCode === 39 && yIndex < 19 && !modalIsVisible) {
       setYIndex(yIndex + 1);
-    } else if (keyCode === 40 && xIndex < genres.length - 1) {
+    }
+    // DOWN ARROW PRESS
+    else if (keyCode === 40 && xIndex < genres.length - 1 && !modalIsVisible) {
       setXIndex(xIndex + 1);
+    }
+    // ENTER PRESS
+    else if (keyCode === 13) {
+      const genre = genres[xIndex];
+      const key = genre.name;
+      const genreMovies = allMovies[key];
+      const movie = genreMovies[yIndex];
+      console.log("MOVIE:", movie);
+      setMovie(movie);
+      setModalIsVisible(true);
+    }
+    // ESC PRESS
+    else if (keyCode === 27) {
+      setModalIsVisible(false);
     }
   }
 
@@ -70,14 +79,12 @@ function Movies() {
     dispatch(fetchAllMovies());
   }, [dispatch]);
 
-  // console.log("allMovies:", allMovies);
-  // console.log("typeof allMovies", typeof allMovies);
-  // console.log("Object.keys(allMovies):", Object.keys(allMovies));
-  // console.log("allMovies[Action]:", allMovies["Action"]);
-  // console.log("allMovies.Action:", allMovies.Action);
-  // console.log("Object.values(allMovies):", Object.values(allMovies));
-  // console.log("allMovies[Adventure]:", allMovies["Adventure"]);
-  // console.log("allMovies[Comedy]:", allMovies["Comedy"]);
+  // useEffect(() => {
+  //   console.log("READY!!!");
+  //   if (Object.keys(allMovies).length === genres.length) {
+  //     setDataReady(true);
+  //   }
+  // }, [allMovies]);
 
   return (
     <div className="movies-container">
@@ -87,17 +94,13 @@ function Movies() {
           Log out
         </button>
       </div>
-      {loading || loadingAllMovies ? (
+      {loadingAllMovies ? (
         <Spinner />
       ) : (
-        <React.Fragment>
+        <>
           {genres.map((genre, genreIndex) => (
             <React.Fragment key={genre.name}>
               <GenreTitle title={genre.name} />
-              {/* console.log(
-                `allMovies[${genre.name}] body:`,
-                allMovies[genre.name]
-              )*/}
               <div className="genre-row">
                 {allMovies[genre.name] &&
                   allMovies[genre.name].map((movie, movieIndex) => (
@@ -115,8 +118,14 @@ function Movies() {
               </div>
             </React.Fragment>
           ))}
-        </React.Fragment>
+        </>
       )}
+      <Modal
+        isVisible={modalIsVisible}
+        title={movie.title}
+        overview={movie.overview}
+        voteAverage={movie.vote_average}
+      />
     </div>
   );
 }
